@@ -33,6 +33,9 @@ collections:
   wml_classification:
     output: true
     permalink: /classification/wml/:path:output_ext
+  wml_classification_cli:
+    output: true
+    permalink: /classification/cli/:path:output_ext
 
 defaults:
   - scope:
@@ -58,5 +61,10 @@ defaults:
   - scope:
       path: ""
       type: "wml_classification"
+    values:
+      layout: index
+  - scope:
+      path: ""
+      type: "wml_classification_cli"
     values:
       layout: index
