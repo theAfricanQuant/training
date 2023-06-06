@@ -90,13 +90,13 @@ def convert_ssd(exported_graph_path, model_structure, output_path):
     frozen_model_path = '.tmp/tmp_frozen_graph.pb'
     input_node = 'Preprocessor/sub'
     bbox_output_node = 'concat'
-    class_output_node = 'Postprocessor/convert_scores'    
+    class_output_node = 'Postprocessor/convert_scores'
     graph = optimize_graph(saved_model_path, frozen_model_path, [input_node], [bbox_output_node, class_output_node])
 
     # conversion tensors have a `:0` at the end of the name
-    input_tensor = input_node + ':0'
-    bbox_output_tensor = bbox_output_node + ':0'
-    class_output_tensor = class_output_node + ':0'
+    input_tensor = f'{input_node}:0'
+    bbox_output_tensor = f'{bbox_output_node}:0'
+    class_output_tensor = f'{class_output_node}:0'
 
     # Convert to Core ML model.
     ssd_model = tfcoreml.convert(

@@ -64,7 +64,7 @@ def main(read_bucket=read_dir, write_bucket=write_dir):
     ############################################################################
     # Create TF Records
     ############################################################################
-    image_files = [image for image in annotations.keys()]
+    image_files = list(annotations.keys())
 
     train_shards = 10
     val_shards = 10

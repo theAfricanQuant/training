@@ -14,7 +14,7 @@ FLAGS = flags.FLAGS
 
 def main(_):
     label_map = get_label_map_dict(FLAGS.label_map_path)
-    label_array = [k for k in sorted(label_map, key=label_map.get)]
+    label_array = list(sorted(label_map, key=label_map.get))
     with open(FLAGS.output_label_path, 'w') as f:
         json.dump(label_array, f)
 

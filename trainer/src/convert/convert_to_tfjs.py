@@ -18,7 +18,7 @@ def convert_to_tfjs(exported_graph_path, output_names, output_path):
             skip_op_check=False,
             strip_debug_ops=True)
     except Exception as err:
-        print('Error: {}'.format(err))
+        print(f'Error: {err}')
 
     # Move the labels to the model directory.
     json_labels = os.path.join(exported_graph_path, 'labels.json')

@@ -12,11 +12,17 @@ FLAGS = flags.FLAGS
 
 def main(_):
     regex = re.compile(r"model\.ckpt-([0-9]+)\.index")
-    numbers = [int(regex.search(f).group(1)) for f in os.listdir(FLAGS.checkpoint_path) if regex.search(f)]
+    numbers = [
+        int(regex.search(f)[1])
+        for f in os.listdir(FLAGS.checkpoint_path)
+        if regex.search(f)
+    ]
     if not numbers:
         print('No checkpoint found!')
         exit(1)
-    trained_checkpoint_prefix = os.path.join(FLAGS.checkpoint_path, 'model.ckpt-{}'.format(max(numbers)))
+    trained_checkpoint_prefix = os.path.join(
+        FLAGS.checkpoint_path, f'model.ckpt-{max(numbers)}'
+    )
     print(trained_checkpoint_prefix)
 
 

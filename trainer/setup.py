@@ -42,12 +42,15 @@ class InstallCommand(sdist):
 
 
 def move_zip(zip_file, name):
-    with tarfile.open('dist/{}-0.1.tar.gz'.format(name)) as tar:
+    with tarfile.open(f'dist/{name}-0.1.tar.gz') as tar:
         for member in tar.getmembers():
-            if member.name.startswith('{}-0.1/{}/'.format(name, name)) and member.isfile():
-                print('in: {}'.format(member.name))
+            if (
+                member.name.startswith(f'{name}-0.1/{name}/')
+                and member.isfile()
+            ):
+                print(f'in: {member.name}')
                 f = tar.extractfile(member)
-                rel_path = os.path.relpath(member.name, '{}-0.1'.format(name))
+                rel_path = os.path.relpath(member.name, f'{name}-0.1')
                 zip_file.writestr(rel_path, f.read())
 
 

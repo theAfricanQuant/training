@@ -20,7 +20,7 @@ def convert_to_core_ml(exported_graph_path, model_structure, output_path):
     if os.path.exists(output_path) and os.path.isdir(output_path):
         shutil.rmtree(output_path)
     os.makedirs(output_path)
-    
+
     if model_structure['type'] == ModelType.LOCALIZATION:
         convert_ssd(exported_graph_path, model_structure, output_path)
     else:
@@ -34,8 +34,10 @@ def convert_to_core_ml(exported_graph_path, model_structure, output_path):
                         tf.get_default_graph().as_graph_def(),
                         model_structure['output_names'])
                 f.write(output_graph_def.SerializeToString())
-        
-        output_feature_names = ['{}:0'.format(name) for name in model_structure['output_names']]
+
+        output_feature_names = [
+            f'{name}:0' for name in model_structure['output_names']
+        ]
 
         class_labels = None
         json_labels = os.path.join(exported_graph_path, 'labels.json')
@@ -48,12 +50,14 @@ def convert_to_core_ml(exported_graph_path, model_structure, output_path):
             with open(json_labels) as f:
                 class_labels = json.load(f)
 
-        tfcoreml.convert(tf_model_path=frozen_model_file,
-                mlmodel_path=os.path.join(output_path, 'Model.mlmodel'),
-                output_feature_names=output_feature_names,
-                class_labels=class_labels,
-                red_bias=-1,
-                green_bias=-1,
-                blue_bias=-1,
-                image_scale=1.0/128.0,
-                image_input_names='{}:0'.format(model_structure['input_name']))
+        tfcoreml.convert(
+            tf_model_path=frozen_model_file,
+            mlmodel_path=os.path.join(output_path, 'Model.mlmodel'),
+            output_feature_names=output_feature_names,
+            class_labels=class_labels,
+            red_bias=-1,
+            green_bias=-1,
+            blue_bias=-1,
+            image_scale=1.0 / 128.0,
+            image_input_names=f"{model_structure['input_name']}:0",
+        )
